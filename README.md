@@ -23,7 +23,6 @@ The following Python packages are required:
 - nltk
 - tiktoken
 - PyPDF2
-- dotenv
 
 ## Installation
 
