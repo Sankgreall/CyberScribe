@@ -1,6 +1,4 @@
 # CyberScribe
-
-## Overview
 CyberScribe is a Python-based tool designed to summarise large volumes of text from multiple data sources. Engineered to work with both OpenAI and Azure OpenAI deployments, this tool is ideal for researchers, professionals, or anyone needing to distil key points from substantial volumes of text.
 
 ## Features
@@ -16,7 +14,6 @@ CyberScribe is a Python-based tool designed to summarise large volumes of text f
 ## Requirements
 - Python 3.x
 
-## Dependencies
 The following Python packages are required:
 
 - openai
@@ -33,7 +30,7 @@ The following Python packages are required:
 ## Installation
 
 ```bash
-git clone https://github.com/yourusername/CyberScribe.git
+git clone https://github.com/yourusername/CyberScribe
 cd CyberScribe
 pip install -r requirements.txt
 ```
