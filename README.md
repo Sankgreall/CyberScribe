@@ -2,11 +2,9 @@
 CyberScribe is a Python-based tool designed to summarise large volumes of text from multiple data sources. Engineered to work with both OpenAI and Azure OpenAI deployments, this tool is ideal for researchers, professionals, or anyone needing to distil key points from diverse data sources.
 
 ## Features
-- Summarise individual or multiple documents.
-- Query-based summarisation for targeted results.
-- Environment variable configuration for ease of setup.
-- Supports both OpenAI and Azure OpenAI deployments.
 - Supports multiple file types including PDF, DOCX, XLSX, txt, and Audio files.
+- Query-based summarisation for targeted results.
+- Supports both OpenAI and Azure OpenAI deployments.
 
 ## AI Accuracy Warning
 ⚠️ CyberScribe leverages OpenAI models with prompts designed to provide accurate and relevant summarisations, however, it's important to note that the tool is not infallible. Users should exercise critical thinking and discretion when interpreting results. The summarisation techiques may not capture nuances or context in the same way a human would, and there may be variations in accuracy depending on the quality and complexity of the original text sources.
