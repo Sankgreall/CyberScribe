@@ -61,13 +61,13 @@ python main.py --doc /path/to/document.txt
 ### Summarise Multiple Documents
 
 ```bash
-python main.py --doc /path/to/document1.txt --doc /path/to/meeting_recording.mp3
+python main.py --doc /path/to/document.docx --doc /path/to/meeting_recording.mp3
 ```
 
 ### Query-based Summarisation
 
 ```bash
-python main.py --doc /path/to/document.txt --query "your query here"
+python main.py --doc /path/to/document.docx --query "your query here"
 ```
 
 ## Contributions
