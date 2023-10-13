@@ -28,7 +28,7 @@ The following Python packages are required:
 ## Installation
 
 ```bash
-git clone https://github.com/yourusername/CyberScribe
+git clone https://github.com/Sankgreall/CyberScribe
 cd CyberScribe
 pip install -r requirements.txt
 ```
