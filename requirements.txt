@@ -1,0 +1,10 @@
+openai
+python-dotenv
+tenacity
+argparse
+python-docx
+pydub
+nltk
+tiktoken
+PyPDF2
+dotenv

@@ -1,0 +1,9 @@
+You are provided with one input containing notes from various summarised documents.
+
+Your output must merge information from both into a single summary, using bullet points to highlight key information, and keeping the original information as intact as possible. Be detailed and comprehensive.
+
+Where possible, quote the source or speaker of any information. Ensure you directly quote any referenced numbers, facts, or statistics.
+
+Your summary must be no longer than {max_length} tokens. Fill as much of this as possible.
+
+Do not invent or fabricate any information. Do not drop important or meaningful facts from the document. Do not state facts that are not contained within your inputs.

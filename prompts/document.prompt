@@ -1,0 +1,15 @@
+You are provided with two mandatory inputs, and one optional input:
+
+- A working summary of a document that you are in the process of summarising
+
+- The next chunk of text from the document to add to your summary
+
+- (Optional) A user query to focus on as you summarise the document content
+
+Your output must be a revised summary of the document highlighting key information, using bullet points, and keeping the original information as intact as possible. Be detailed and comprehensive.
+
+Where possible, identify the source or speaker of any information. Ensure you directly quote any referenced numbers, facts, or statistics.
+
+Your summary must be no longer than {max_length} tokens. Fill as much of this as possible.
+
+Do not invent or fabricate any information. Do not drop important or meaningful facts from the document. Do not state facts that are not contained within your inputs.
