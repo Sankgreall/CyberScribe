@@ -1,0 +1,79 @@
+# CyberScribe
+
+## Overview
+CyberScribe is a Python-based tool designed to summarise large volumes of text from multiple documents. Engineered to work with both OpenAI and Azure OpenAI deployments, this tool is ideal for researchers, students, or anyone needing to distil key points from substantial volumes of text.
+
+## Features
+- Summarise individual or multiple documents.
+- Query-based summarisation for targeted results.
+- Environment variable configuration for ease of setup.
+- Supports both OpenAI and Azure OpenAI deployments.
+- Supports multiple file types including PDF, DOCX, XLSX, txt, and Audio files.
+
+## Requirements
+- Python 3.x
+
+## Dependencies
+The following Python packages are required:
+
+- openai
+- python-dotenv
+- tenacity
+- argparse
+- python-docx
+- pydub
+- nltk
+- tiktoken
+- PyPDF2
+- dotenv
+
+## Installation
+
+```bash
+git clone https://github.com/yourusername/CyberScribe.git
+cd CyberScribe
+pip install -r requirements.txt
+```
+
+## Configuration
+
+Create a `.env` file in the root directory based on the `.env.sample`. Update the variables per your requirements. Below is a table explaining each environment variable:
+
+| Variable             | Description                                         | Recommended Value      |
+|----------------------|-----------------------------------------------------|------------------------|
+| `AI_TYPE`            | AI Service ('azure' or 'openai')                    |                        |
+| `OPENAI_API_KEY`     | OpenAI or Azure API key                             |                        |
+| `AZ_VERSION`         | Azure API version                                   | '2023-08-01-preview'   |
+| `AZ_RESOURCE`        | Name of Azure OpenAI resource                       |                        |
+| `MODEL`              | Model to use                                        | 'gpt-4-32k'            |
+| `MAX_CONTEXT`        | Maximum context size                                | 29000                  |
+| `MAX_SUMMARY_LENGTH` | Maximum summary length                              | 2500                   |
+| `TEMPERATURE`        | Model's temperature                                 | 0.2                    |
+
+> Note: The 32k GPT-4 model is recommended, but any context length can be accommodated and configured in the `.env` file.
+
+## Usage
+
+### Basic Usage
+
+```bash
+python main.py --doc /path/to/document.txt
+```
+
+### Summarise Multiple Documents
+
+```bash
+python main.py --doc /path/to/document1.txt --doc /path/to/document2.txt
+```
+
+### Query-based Summarisation
+
+```bash
+python main.py --doc /path/to/document.txt --query "your query here"
+```
+
+## Contributions
+Feel free to contribute to this project by opening issues or submitting pull requests.
+
+## Licence
+This project is licenced under the MIT Licence - see the [LICENCE.md](LICENCE.md) file for details.
