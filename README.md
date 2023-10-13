@@ -61,7 +61,7 @@ python main.py --doc /path/to/document.txt
 ### Summarise Multiple Documents
 
 ```bash
-python main.py --doc /path/to/document1.txt --doc /path/to/document2.txt
+python main.py --doc /path/to/document1.txt --doc /path/to/meeting_recording.mp3
 ```
 
 ### Query-based Summarisation
