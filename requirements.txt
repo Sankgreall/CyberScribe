@@ -7,4 +7,3 @@ pydub
 nltk
 tiktoken
 PyPDF2
-dotenv
