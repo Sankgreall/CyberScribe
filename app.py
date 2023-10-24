@@ -75,7 +75,7 @@ def generate_notes(doc_paths, query=None, return_text=False):
 
     # Submit summaries
     if len(merge_chunks) == 0:
-        full_summary = openai_wrapper.submit_to_openai("./prompts/merge.prompt", merge_prompt)
+        full_summary = openai_wrapper.submit_to_openai("merge_prompt", merge_prompt)
 
     # We iterate summaries
     else:
@@ -83,7 +83,7 @@ def generate_notes(doc_paths, query=None, return_text=False):
         full_summary = ""
         for chunk in merge_chunks:
             full_summary = full_summary + chunk
-            full_summary = openai_wrapper.submit_to_openai("./prompts/merge.prompt", full_summary)
+            full_summary = openai_wrapper.submit_to_openai("merge_prompt", full_summary)
 
     # Check if the function should return the text or write it to a file
     if return_text:

@@ -2,4 +2,6 @@
 .env
 output/
 *.pyc
-
+build/
+CyberScribe.egg-info
+venv/

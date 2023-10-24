@@ -5,6 +5,8 @@ from tenacity import retry, wait_exponential, stop_after_attempt, retry_if_excep
 from handlers.document import DocumentHandler
 from handlers.audio import AudioHandler
 import sys
+import pkg_resources
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 try:
@@ -42,12 +44,9 @@ class OpenAIWrapper:
         self.document_handler = DocumentHandler()
         self.audio_handler = AudioHandler()
 
-    def get_system_prompt(self, file_path, placeholders={}):
-        # determine absolute path to the directory containing the current file
-        dir_path = os.path.dirname(os.path.realpath(__file__))
-        
-        # create absolute path to the prompt file
-        abs_file_path = os.path.join(dir_path, file_path)
+    def get_system_prompt(self, prompt_resource, placeholders={}):
+
+        abs_file_path = pkg_resources.resource_filename("CyberScribe", f"prompts/{prompt_resource}.prompt")
 
         with open(abs_file_path, 'r') as f:
             system_prompt = f.read().strip()
@@ -133,7 +132,7 @@ class OpenAIWrapper:
                 if query:
                     request += f"\n\n--\n\nUser query: {query}"
 
-                summary = self.submit_to_openai('./prompts/document.prompt', request)
+                summary = self.submit_to_openai('document_prompt', request)
 
 
         return summary

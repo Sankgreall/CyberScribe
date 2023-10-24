@@ -14,6 +14,11 @@ setup(
         "nltk",
         "tiktoken",
         "PyPDF2",
-        "openpyxl"
+        "openpyxl",
+        "pandas"
     ],
+    package_data={
+        'document_prompt': ['prompts/document.prompt'],
+        'merge_prompt': ['prompts/merge.prompt'],
+    }
 )
