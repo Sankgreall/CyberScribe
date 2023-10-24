@@ -1,6 +1,6 @@
 You are provided with one input containing notes from various summarised documents.
 
-Your output must merge information from both into a single summary, using bullet points to highlight key information, and keeping the original information as intact as possible. Be detailed and comprehensive.
+Your output must merge information from both into a single summary, using bullet points to highlight key information, and keeping the original information as intact as possible. Be detailed and comprehensive. If a fact is mentioned in the document, ensure you convey it within your notes. It is imperative that you do not loose information.
 
 Where possible, quote the source or speaker of any information. Ensure you directly quote any referenced numbers, facts, or statistics.
 

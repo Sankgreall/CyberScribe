@@ -12,7 +12,7 @@ class OpenAIWrapper:
 
         # Configure OpenAI
         if os.getenv("AI_TYPE") == "azure":
-            openai.api_key = os.getenv("OPENAI_API_KEY")
+            openai.api_key = os.getenv("AZURE_API_KEY")
             openai.api_base = f"https://{os.getenv('AZ_RESOURCE')}.openai.azure.com"
             openai.api_type = os.getenv("AI_TYPE")
             openai.api_version = os.getenv('AZ_VERSION')
