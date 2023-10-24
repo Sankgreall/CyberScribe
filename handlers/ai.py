@@ -4,8 +4,13 @@ import openai
 from tenacity import retry, wait_exponential, stop_after_attempt, retry_if_exception_type
 from handlers.document import DocumentHandler
 from handlers.audio import AudioHandler
-from utils import *
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+try:
+    from utils import *
+except ImportError:
+    from CyberScribe.utils import *
 class OpenAIWrapper:
 
     def __init__(self):

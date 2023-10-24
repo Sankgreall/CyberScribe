@@ -6,8 +6,11 @@ from dotenv import load_dotenv
 from handlers.ai import OpenAIWrapper
 
 # Import utils
-from utils import *
-
+if __name__ == "__main__":
+    from utils import *
+else:
+    from CyberScribe.utils import *
+    
 # Load environment variables from .env file
 load_dotenv()
 
