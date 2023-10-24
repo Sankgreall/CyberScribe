@@ -11,6 +11,7 @@ try:
     from utils import *
 except ImportError:
     from CyberScribe.utils import *
+
 class OpenAIWrapper:
 
     def __init__(self):
@@ -42,7 +43,13 @@ class OpenAIWrapper:
         self.audio_handler = AudioHandler()
 
     def get_system_prompt(self, file_path, placeholders={}):
-        with open(file_path, 'r') as f:
+        # determine absolute path to the directory containing the current file
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        
+        # create absolute path to the prompt file
+        abs_file_path = os.path.join(dir_path, file_path)
+
+        with open(abs_file_path, 'r') as f:
             system_prompt = f.read().strip()
             if placeholders:
                 system_prompt = system_prompt.format(**placeholders)
@@ -72,9 +79,11 @@ class OpenAIWrapper:
         if os.getenv('AI_TYPE') == "azure":
             # Do things differently, because they SUCK
             response = openai.ChatCompletion.create(engine=self.MODEL, temperature=self.TEMPERATURE, **prompt)
+            print(response)
 
         else:
             response = openai.ChatCompletion.create(model=self.MODEL, temperature=self.TEMPERATURE, **prompt)
+            print(response)
 
         return response.choices[0].message.content
     
@@ -126,7 +135,7 @@ class OpenAIWrapper:
                 if query:
                     request += f"\n\n--\n\nUser query: {query}"
 
-                summary = self.submit_to_openai('./prompts/document.prompt', request)
+                summary = self.submit_to_openai('../prompts/document.prompt', request)
 
 
         return summary
