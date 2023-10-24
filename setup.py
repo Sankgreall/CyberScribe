@@ -14,5 +14,6 @@ setup(
         "nltk",
         "tiktoken",
         "PyPDF2",
+        "openpyxl"
     ],
 )
