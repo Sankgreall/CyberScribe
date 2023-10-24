@@ -47,12 +47,12 @@ class OpenAIWrapper:
     def get_system_prompt(self, prompt_resource, placeholders={}):
 
         # Try package resource first
-        try:
-            file_path = pkg_resources.resource_filename("CyberScribe", f"prompts/{prompt_resource}.prompt")
+        # try:
+        file_path = pkg_resources.resource_filename("CyberScribe", f"prompts/{prompt_resource}.prompt")
 
-        # Then fall back to relative path
-        except Exception:
-            file_path = f"./prompts/{prompt_resource}.prompt"
+        # # Then fall back to relative path
+        # except Exception:
+        #     file_path = f"./prompts/{prompt_resource}.prompt"
 
         with open(file_path, 'r') as f:
             system_prompt = f.read().strip()
