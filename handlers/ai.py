@@ -133,7 +133,7 @@ class OpenAIWrapper:
                 if query:
                     request += f"\n\n--\n\nUser query: {query}"
 
-                summary = self.submit_to_openai('../prompts/document.prompt', request)
+                summary = self.submit_to_openai('./prompts/document.prompt', request)
 
 
         return summary
