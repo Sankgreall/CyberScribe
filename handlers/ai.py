@@ -79,11 +79,9 @@ class OpenAIWrapper:
         if os.getenv('AI_TYPE') == "azure":
             # Do things differently, because they SUCK
             response = openai.ChatCompletion.create(engine=self.MODEL, temperature=self.TEMPERATURE, **prompt)
-            print(response)
 
         else:
             response = openai.ChatCompletion.create(model=self.MODEL, temperature=self.TEMPERATURE, **prompt)
-            print(response)
 
         return response.choices[0].message.content
     
