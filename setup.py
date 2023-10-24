@@ -18,7 +18,6 @@ setup(
         "pandas"
     ],
     package_data={
-        'document_prompt': ['prompts/document.prompt'],
-        'merge_prompt': ['prompts/merge.prompt'],
+        'CyberScribe': ['prompts/document.prompt', 'prompts/merge.prompt'],
     }
 )
