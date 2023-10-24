@@ -46,9 +46,15 @@ class OpenAIWrapper:
 
     def get_system_prompt(self, prompt_resource, placeholders={}):
 
-        abs_file_path = pkg_resources.resource_filename("CyberScribe", f"prompts/{prompt_resource}.prompt")
+        # Try package resource first
+        try:
+            file_path = pkg_resources.resource_filename("CyberScribe", f"prompts/{prompt_resource}.prompt")
 
-        with open(abs_file_path, 'r') as f:
+        # Then fall back to relative path
+        except Exception:
+            file_path = f"./prompts/{prompt_resource}.prompt"
+
+        with open(file_path, 'r') as f:
             system_prompt = f.read().strip()
             if placeholders:
                 system_prompt = system_prompt.format(**placeholders)
@@ -60,13 +66,13 @@ class OpenAIWrapper:
         retry=retry_if_exception_type(Exception),
         retry_error_callback=retry_error_callback
     )
-    def submit_to_openai(self, system_prompt_path, user_content, placeholders={}):
+    def submit_to_openai(self, system_prompt_name, user_content, placeholders={}):
 
         # Set the max context length of the summary
         placeholders['max_length'] = self.MAX_SUMMARY_LENGTH
 
         # Get the system prompt
-        system_prompt = self.get_system_prompt(system_prompt_path, placeholders)
+        system_prompt = self.get_system_prompt(system_prompt_name, placeholders)
 
         prompt = {
             "messages": [
@@ -132,7 +138,7 @@ class OpenAIWrapper:
                 if query:
                     request += f"\n\n--\n\nUser query: {query}"
 
-                summary = self.submit_to_openai('document_prompt', request)
+                summary = self.submit_to_openai('document', request)
 
 
         return summary
