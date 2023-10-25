@@ -16,7 +16,18 @@ except ImportError:
 
 class OpenAIWrapper:
 
+    def __del__(self):
+        # Reset openai properties
+        openai.api_base = self.original_api_base
+        openai.api_type = self.original_api_type
+        openai.api_version = self.original_api_version
+
     def __init__(self):
+
+        # Store original OpenAI properties to avoid conflicting with other packages
+        self.original_api_base = openai.api_base
+        self.original_api_type = openai.api_type
+        self.original_api_version = openai.api_version
 
         # Configure OpenAI
         if os.getenv("AI_TYPE") == "azure":
