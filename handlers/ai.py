@@ -35,11 +35,9 @@ class OpenAIWrapper:
             openai.api_base = f"https://{os.getenv('AZ_RESOURCE')}.openai.azure.com"
             openai.api_type = os.getenv("AI_TYPE")
             openai.api_version = os.getenv('AZ_VERSION')
-            pass
 
         elif os.getenv("AI_TYPE") == "openai":
             openai.api_key = os.getenv("OPENAI_API_KEY")
-            pass
 
         else:
             print(f"Unknown AI type: {os.getenv('AI_TYPE')}. Exiting...")
@@ -58,12 +56,12 @@ class OpenAIWrapper:
     def get_system_prompt(self, prompt_resource, placeholders={}):
 
         # Try package resource first
-        # try:
-        file_path = pkg_resources.resource_filename("CyberScribe", f"prompts/{prompt_resource}.prompt")
+        try:
+            file_path = pkg_resources.resource_filename("CyberScribe", f"prompts/{prompt_resource}.prompt")
 
-        # # Then fall back to relative path
-        # except Exception:
-        #     file_path = f"./prompts/{prompt_resource}.prompt"
+        # Then fall back to relative path
+        except Exception:
+            file_path = f"./prompts/{prompt_resource}.prompt"
 
         with open(file_path, 'r') as f:
             system_prompt = f.read().strip()
