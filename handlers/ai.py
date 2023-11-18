@@ -99,6 +99,20 @@ class OpenAIWrapper:
 
         return response.choices[0].message.content
     
+    def transcribe(self, doc_path):
+
+        if is_audio_file(doc_path):
+            file_size = os.path.getsize(doc_path)
+
+            if file_size >= self.audio_handler.get_max_size():
+                print("Transcribing large audio...")
+                transcription = self.audio_handler.transcribe_large_audio(doc_path)
+            else:
+                print("Transcribing audio...")
+                transcription = self.audio_handler.transcribe_audio(doc_path)
+
+        return transcription
+    
     def summarise_document(self, doc_path, query=None, summary=""):
 
         # If document is Excel

@@ -38,68 +38,83 @@ def summarise_documents(doc_paths, query):
     
     return summaries
 
-def generate_notes(doc_paths, query=None, return_text=False):
+def generate_notes(doc_paths, query=None, transcribe=False, return_text=False):
 
     doc_paths, query = parse_args(doc_paths, query)
-    summaries = summarise_documents(doc_paths, query)
 
     # Load AI class
     openai_wrapper = OpenAIWrapper()
 
-    print("Merging summaries into notes...")
-    merge_prompt = ""
-    merge_chunks = []
-    for index, summary in enumerate(summaries):
-        # Construct master prompt
-        new_document = ""
-        new_document += f"{doc_paths[index]} summary:\n"
-        new_document += f"{summary}"
+    if not transcribe:
 
-        if index < len(summaries) - 1:
-            new_document += "\n\n--\n\n"
+        summaries = summarise_documents(doc_paths, query)
 
-        # Count total tokens for the prompt
-        total_tokens = count_tokens(merge_prompt + new_document)
+        print("Merging summaries into notes...")
+        merge_prompt = ""
+        merge_chunks = []
+        for index, summary in enumerate(summaries):
+            # Construct master prompt
+            new_document = ""
+            new_document += f"{doc_paths[index]} summary:\n"
+            new_document += f"{summary}"
 
-        # This ensures success, as we need to leave room for the returned sumary + the summary from the previous iteration
-        if total_tokens < (int(os.getenv('MAX_CONTEXT')) - int(os.getenv('MAX_SUMMARY_LENGTH'))):
-            # Proceed as usual
-            merge_prompt = merge_prompt + new_document
-            pass
+            if index < len(summaries) - 1:
+                new_document += "\n\n--\n\n"
+
+            # Count total tokens for the prompt
+            total_tokens = count_tokens(merge_prompt + new_document)
+
+            # This ensures success, as we need to leave room for the returned sumary + the summary from the previous iteration
+            if total_tokens < (int(os.getenv('MAX_CONTEXT')) - int(os.getenv('MAX_SUMMARY_LENGTH'))):
+                # Proceed as usual
+                merge_prompt = merge_prompt + new_document
+                pass
+            else:
+                # Add the current merge chunk onto an array, and start new chunk
+                merge_chunks.append(merge_prompt)
+                merge_prompt = new_document
+                # Continue the loop
+                pass
+
+        # Submit summaries
+        if len(merge_chunks) == 0:
+            full_summary = openai_wrapper.submit_to_openai("merge", merge_prompt)
+
+        # We iterate summaries
         else:
-            # Add the current merge chunk onto an array, and start new chunk
-            merge_chunks.append(merge_prompt)
-            merge_prompt = new_document
-            # Continue the loop
-            pass
+            print("Summarising incrementally due to small context window...")
+            full_summary = ""
+            for chunk in merge_chunks:
+                full_summary = full_summary + chunk
+                full_summary = openai_wrapper.submit_to_openai("merge", full_summary)
 
-    # Submit summaries
-    if len(merge_chunks) == 0:
-        full_summary = openai_wrapper.submit_to_openai("merge", merge_prompt)
+        # Check if the function should return the text or write it to a file
+        if return_text:
+            return full_summary
+        else:
+            write_to_file("notes.txt", full_summary)
+            print("Done!")
 
-    # We iterate summaries
-    else:
-        print("Summarising incrementally due to small context window...")
-        full_summary = ""
-        for chunk in merge_chunks:
-            full_summary = full_summary + chunk
-            full_summary = openai_wrapper.submit_to_openai("merge", full_summary)
-
-    # Check if the function should return the text or write it to a file
-    if return_text:
-        return full_summary
-    else:
-        write_to_file("notes.txt", full_summary)
         print("Done!")
 
-    print("Done!")
+    # Just create transcripts
+    # TODO: return data in line with return_text flag above
+    else:
+        for doc in doc_paths:
+            print(f"Transcribing {doc}...")
+            full_summary = openai_wrapper.transcribe(doc)
+            file_name = doc.split('\\')[-1].split('.')[0]
+            write_to_file(f"transcription.txt", full_summary)
+            print(file_name)
+
 
 
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='Generate notes from audio, text transcription, or documents.')
     parser.add_argument('--doc', help='Path(s) to the document(s) for summarisation.', type=str, action='append', default=[])
+    parser.add_argument('--transcribe', help='Set to true if input is a transcript.', action='store_true')
     parser.add_argument("--query", help="Query string. Defaults to None if not provided.", type=str, default=None)
     
     args = parser.parse_args()
-    generate_notes(args.doc, args.query)
+    generate_notes(args.doc, args.query, args.transcribe)
