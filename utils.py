@@ -4,6 +4,18 @@ from PyPDF2 import PdfReader
 import mimetypes
 import os
 
+def process_filename(path):
+    # Extract the base name (file name with extension)
+    file_name_with_ext = os.path.basename(path)
+
+    # Split the file name and the extension
+    file_name, _ = os.path.splitext(file_name_with_ext)
+
+    # Remove spaces
+    file_name_no_spaces = file_name.replace(" ", "")
+
+    return file_name_no_spaces
+
 def read_text_file(file_path):
     with open(file_path, 'r') as file:
         return file.read()

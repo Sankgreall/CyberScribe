@@ -98,22 +98,18 @@ def generate_notes(doc_paths, query=None, transcribe=False, return_text=False):
         print("Done!")
 
     # Just create transcripts
-    # TODO: return data in line with return_text flag above
-    else:
-        for doc in doc_paths:
-            print(f"Transcribing {doc}...")
-            full_summary = openai_wrapper.transcribe(doc)
-            file_name = doc.split('\\')[-1].split('.')[0]
-            write_to_file(f"transcription.txt", full_summary)
-            print(file_name)
-
-
+    else:        
+        print(f"Transcribing {transcribe}...")
+        transcription = openai_wrapper.transcribe(transcribe)
+        
+        if return_text:
+            return transcription
 
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='Generate notes from audio, text transcription, or documents.')
     parser.add_argument('--doc', help='Path(s) to the document(s) for summarisation.', type=str, action='append', default=[])
-    parser.add_argument('--transcribe', help='Set to true if input is a transcript.', action='store_true')
+    parser.add_argument('--transcribe', help='Set to true if input is a transcript.', type=str, default=False)
     parser.add_argument("--query", help="Query string. Defaults to None if not provided.", type=str, default=None)
     
     args = parser.parse_args()

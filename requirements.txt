@@ -1,4 +1,4 @@
-openai==0.28.1
+openai
 python-dotenv
 tenacity
 argparse
@@ -7,3 +7,13 @@ pydub
 nltk
 tiktoken
 PyPDF2
+rx
+sounddevice
+numpy
+pandas
+diart
+scipy
+pyannote.audio
+torchaudio
+torch
+openai-whisper

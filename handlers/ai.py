@@ -1,6 +1,7 @@
 import os
 import pandas as pd
-import openai
+from openai import OpenAI
+from openai import AzureOpenAI
 from tenacity import retry, wait_exponential, stop_after_attempt, retry_if_exception_type
 from handlers.document import DocumentHandler
 from handlers.audio import AudioHandler
@@ -16,28 +17,22 @@ except ImportError:
 
 class OpenAIWrapper:
 
-    def __del__(self):
-        # Reset openai properties
-        openai.api_base = self.original_api_base
-        openai.api_type = self.original_api_type
-        openai.api_version = self.original_api_version
-
     def __init__(self):
 
-        # Store original OpenAI properties to avoid conflicting with other packages
-        self.original_api_base = openai.api_base
-        self.original_api_type = openai.api_type
-        self.original_api_version = openai.api_version
+        # Instantiate new OpenAI client
+        # Configure Azure
+        if os.getenv("AI_TYPE") == "azure":
+            self.openai_client = AzureOpenAI(
+                api_key=os.environ.get('AZURE_OPENAI_API_KEY'),
+                azure_endpoint=f"https://{os.environ.get('AZ_RESOURCE')}.openai.azure.com",
+                api_version=os.environ.get('AZ_VERSION')
+            )
 
         # Configure OpenAI
-        if os.getenv("AI_TYPE") == "azure":
-            openai.api_key = os.getenv("AZURE_API_KEY")
-            openai.api_base = f"https://{os.getenv('AZ_RESOURCE')}.openai.azure.com"
-            openai.api_type = os.getenv("AI_TYPE")
-            openai.api_version = os.getenv('AZ_VERSION')
-
         elif os.getenv("AI_TYPE") == "openai":
-            openai.api_key = os.getenv("OPENAI_API_KEY")
+            self.openai_client = OpenAI(
+                api_key=os.environ.get('OPENAI_API_KEY'),
+            )
 
         else:
             print(f"Unknown AI type: {os.getenv('AI_TYPE')}. Exiting...")
@@ -90,26 +85,15 @@ class OpenAIWrapper:
             ]
         }
 
-        if os.getenv('AI_TYPE') == "azure":
-            # Do things differently, because they SUCK
-            response = openai.ChatCompletion.create(engine=self.MODEL, temperature=self.TEMPERATURE, **prompt)
-
-        else:
-            response = openai.ChatCompletion.create(model=self.MODEL, temperature=self.TEMPERATURE, **prompt)
+        # Submit to OpenAI
+        response = self.openai_client.ChatCompletion.create(model=self.MODEL, temperature=self.TEMPERATURE, **prompt)
 
         return response.choices[0].message.content
     
     def transcribe(self, doc_path):
 
         if is_audio_file(doc_path):
-            file_size = os.path.getsize(doc_path)
-
-            if file_size >= self.audio_handler.get_max_size():
-                print("Transcribing large audio...")
-                transcription = self.audio_handler.transcribe_large_audio(doc_path)
-            else:
-                print("Transcribing audio...")
-                transcription = self.audio_handler.transcribe_audio(doc_path)
+            transcription = self.audio_handler.transcribe_audio(doc_path)
 
         return transcription
     
@@ -139,13 +123,12 @@ class OpenAIWrapper:
             chunks_as_text = self.document_handler.chunk_text(text, self.MAX_SUMMARY_LENGTH)
 
         elif is_audio_file(doc_path):
-            file_size = os.path.getsize(doc_path)
-            print("Transcribing audio...")
 
-            if file_size >= self.audio_handler.get_max_size():
-                transcription = self.audio_handler.transcribe_large_audio(doc_path)
-            else:
-                transcription = self.audio_handler.transcribe_audio(doc_path)
+            print("Transcribing audio...")
+            transcription = self.audio_handler.transcribe_audio(doc_path)
+
+            # Load data from file
+            transcription = read_text_file(transcription['output_file'])
 
             # Chunk
             chunks_as_text = self.document_handler.chunk_text(transcription, self.MAX_SUMMARY_LENGTH)
