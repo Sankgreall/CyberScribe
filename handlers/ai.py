@@ -1,7 +1,6 @@
 import os
 import pandas as pd
-from openai import OpenAI
-from openai import AzureOpenAI
+from openai import OpenAI, AzureOpenAI
 from tenacity import retry, wait_exponential, stop_after_attempt, retry_if_exception_type
 from handlers.document import DocumentHandler
 from handlers.audio import AudioHandler
@@ -86,7 +85,7 @@ class OpenAIWrapper:
         }
 
         # Submit to OpenAI
-        response = self.openai_client.ChatCompletion.create(model=self.MODEL, temperature=self.TEMPERATURE, **prompt)
+        response = self.openai_client.chat.completions.create(model=self.MODEL, temperature=self.TEMPERATURE, **prompt)
 
         return response.choices[0].message.content
     

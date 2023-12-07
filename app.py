@@ -38,7 +38,7 @@ def summarise_documents(doc_paths, query):
     
     return summaries
 
-def generate_notes(doc_paths, query=None, transcribe=False, return_text=False):
+def scribe(doc_paths, query=None, transcribe=False, return_text=False):
 
     doc_paths, query = parse_args(doc_paths, query)
 
@@ -109,8 +109,8 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='Generate notes from audio, text transcription, or documents.')
     parser.add_argument('--doc', help='Path(s) to the document(s) for summarisation.', type=str, action='append', default=[])
-    parser.add_argument('--transcribe', help='Set to true if input is a transcript.', type=str, default=False)
+    parser.add_argument('--transcribe', help='Path to the input audio file for transcription.', type=str, default=False)
     parser.add_argument("--query", help="Query string. Defaults to None if not provided.", type=str, default=None)
     
     args = parser.parse_args()
-    generate_notes(args.doc, args.query, args.transcribe)
+    scribe(args.doc, args.query, args.transcribe)
