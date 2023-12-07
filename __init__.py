@@ -1,1 +1,1 @@
-from .app import generate_notes
+from .app import scribe

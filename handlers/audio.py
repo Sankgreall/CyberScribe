@@ -4,11 +4,6 @@ from openai import OpenAI
 import os
 import io
 import tempfile
-import rx.operators as ops
-# from diart import OnlineSpeakerDiarization, PipelineConfig
-import sounddevice as sd
-import numpy as np
-import time
 from scipy.io import wavfile
 import threading
 import queue
@@ -16,8 +11,6 @@ from pydub import AudioSegment
 from pyannote.audio import Pipeline
 from pyannote.core import Segment, Annotation, Timeline
 import torchaudio
-import torch
-import re
 import whisper
 import tempfile
 from utils import *
