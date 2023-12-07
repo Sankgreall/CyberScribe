@@ -13,10 +13,14 @@ from pyannote.core import Segment, Annotation, Timeline
 import torchaudio
 import whisper
 import tempfile
-from utils import *
 import subprocess
 from pathlib import Path
 
+# Import standard utilities
+try:
+    from utils import *
+except ImportError:
+    from CyberScribe.utils import *
 
 
 SAMPLE_RATE = 44100  # Sample rate
